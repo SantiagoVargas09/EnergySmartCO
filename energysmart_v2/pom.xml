@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        Estos tres datos identifican el proyecto en Maven.
+        groupId:    es como el "apellido" del proyecto (normalmente el dominio al revés)
+        artifactId: es el nombre del proyecto
+        version:    la versión actual (SNAPSHOT significa que está en desarrollo)
+    -->
+    <groupId>com.energysmartco</groupId>
+    <artifactId>EnergySmartCO</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>EnergySmartCO</name>
+    <description>Sistema de gestión de consumo energético del hogar</description>
+
+    <properties>
+        <!-- Le decimos a Maven que compile con Java 11 -->
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <!-- Evita warnings de codificación en la consola -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!--
+            JUnit 5: librería para hacer pruebas unitarias.
+            "test" significa que solo se usa cuando corres las pruebas, no en el JAR final.
+        -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!--
+                Plugin del compilador de Maven.
+                Asegura que compile con Java 11 y codificación UTF-8.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <!--
+                Plugin para correr pruebas con JUnit 5.
+                Sin esto Maven no encuentra las pruebas de JUnit 5.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+            </plugin>
+
+            <!--
+                Plugin exec: permite ejecutar la app con "mvn exec:java"
+                desde la terminal, o con el botón Run de NetBeans.
+                mainClass le dice cuál es el punto de entrada del programa.
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>energysmartco.app.MainApp</mainClass>
+                </configuration>
+            </plugin>
+
+            <!--
+                Plugin para generar un "fat JAR" (JAR ejecutable que incluye todo).
+                Así puedes distribuir la app como un solo archivo .jar.
+                Para generarlo: mvn package
+                Para ejecutarlo: java -jar target/EnergySmartCO-1.0-SNAPSHOT.jar
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- Esta línea le dice al JAR cuál es la clase principal -->
+                            <mainClass>energysmartco.app.MainApp</mainClass>
+                        </manifest>
+                    </archive>
+                    <finalName>EnergySmartCO</finalName>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
